@@ -67,18 +67,6 @@ async function disconnectRedis(client) {
     });
 }
 
-async function getBalanceRedis(redisClient, key) {
-    const start = new Date();
-    const res = await util.promisify(redisClient.get).bind(redisClient).call(redisClient, key);
-    const end = new Date();
-    const duration = end - start;
-    console.log(`Promise took ${duration} milliseconds.`);
-    return parseInt(res || "0");
-}
-async function chargeRedis(redisClient, key, charges) {
-    return util.promisify(redisClient.decrby).bind(redisClient).call(redisClient, key, charges);
-}
-
 function performDecrement(client, key, decrementBy) {
   return new Promise((resolve, reject) => {
     // if the current balance is too small, the Lua script returns -1
